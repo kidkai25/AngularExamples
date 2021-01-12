@@ -1,0 +1,30 @@
+<html ng-app="countryApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular.js Example</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script>
+      var countryApp = angular.module('countryApp', []);
+      countryApp.controller('CountryCtrl', function ($scope, $http){
+        $http.get('countries.json').success(function(data) { //automatically parses data as json object
+          $scope.countries = data;
+
+          $scope.sortField = 'population'; //sortField property on the scope
+        });
+      }); 
+    </script>
+  </head>
+  <body ng-controller="CountryCtrl">
+    Search: <input type='text' ng-model = 'query'/>
+    <table>
+      <tr>      
+        <th><a href="" ng-click="sortField = 'name'">Countries</a></th> <!--Angular expression, you can assign the values too! :)-->
+        <th><a href="" ng-click="sortField = 'population'">Population</a></th>
+      </tr>
+      <tr ng-repeat="country in countries | filter:query | orderBy: sortField"> <!--Not quoted will look for model property-->
+        <td>{{country.name}}</td>
+        <td>{{country.population}}</td>
+      </tr>
+    </table>
+  </body>
+</html>
